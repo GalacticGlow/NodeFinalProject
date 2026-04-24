@@ -16,7 +16,7 @@ export const registerSchema = z.object({
         .max(16, "Password should be between 8 and 16 characters"),
 
     role: z
-        .enum(["USER", "RECEPTIONIST", "ADMIN"]).optional()
+        .enum(["GUEST", "RECEPTIONIST", "ADMIN"]).optional()
 });
 
 export const loginSchema = z.object({
