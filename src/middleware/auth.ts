@@ -75,3 +75,23 @@ export function requireRole(...roles: RequestWithUser["user"]["role"][]) {
         next();
     };
 }
+
+export const optionalAuth = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+        return next();
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: "Token missing from header" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, CONFIG.jwtSecret) as unknown as JWTPayload;
+        (req as RequestWithUser).user = decoded;
+    } catch (err) {
+    }
+    next();
+};

@@ -9,7 +9,8 @@ export type Room = {
 export type User = {
     id:	string,
     name:	string,
-    email:	string
+    email:	string,
+    role: "GUEST" | "RECEPTIONIST" | "ADMIN"
 }
 
 export type Booking = {
