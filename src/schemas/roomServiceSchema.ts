@@ -9,3 +9,5 @@ export const createRoomServiceSchema = z.object({
 export const replaceRoomServiceSchema = createRoomServiceSchema.extend({
     status: z.enum(["PENDING", "COMPLETED"]),
 });
+
+export const updateRoomServiceSchema = replaceRoomServiceSchema.partial();
