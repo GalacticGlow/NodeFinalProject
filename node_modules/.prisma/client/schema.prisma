@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  type        RoomType
+  room_number Int      @unique
+  price       Int
+  available   Boolean  @default(true)
+
+  bookings Booking[]
+  services RoomService[]
+}
+
+model User {
+  id           String @id @default(cuid())
+  name         String
+  email        String @unique
+  passwordHash String
+  role         Role
+
+  bookings Booking[]
+}
+
+model Booking {
+  id     String @id @default(cuid())
+  userId String
+  roomId String
+
+  reservationDate DateTime  @default(now())
+  stayStartDate   DateTime
+  stayEndDate     DateTime?
+
+  status BookingStatus
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+model RoomService {
+  id     String @id @default(cuid())
+  roomId String
+
+  serviceType   ServiceType
+  scheduledTime DateTime
+  status        ServiceStatus
+
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+enum RoomType {
+  Standard
+  Superior
+  Suite
+}
+
+enum BookingStatus {
+  OCCUPIED
+  VACANT
+  CANCELLED
+}
+
+enum ServiceType {
+  CLEANING
+  MINIBAR_REFILL
+  REPAIR
+}
+
+enum ServiceStatus {
+  PENDING
+  COMPLETED
+}
+
+enum Role {
+  GUEST
+  RECEPTIONIST
+  ADMIN
+}
