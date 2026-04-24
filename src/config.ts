@@ -9,7 +9,7 @@ function getEnvironmentVariable(name: string, defaultValue?: string): string {
 }
 
 const CONFIG = {
-    jwtSecret: getEnvironmentVariable("JWT_SECRET"),
+    jwtSecret: process.env.JWT_SECRET as string,
     jwtExpiresIn: getEnvironmentVariable("JWT_EXPIRES_IN", "7d"),
 };
 

@@ -14,6 +14,9 @@ export const registerSchema = z.object({
         .string()
         .min(8, "Password should be between 8 and 16 characters")
         .max(16, "Password should be between 8 and 16 characters"),
+
+    role: z
+        .enum(["USER", "RECEPTIONIST", "ADMIN"]).optional()
 });
 
 export const loginSchema = z.object({
