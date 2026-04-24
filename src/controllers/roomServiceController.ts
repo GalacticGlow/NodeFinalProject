@@ -105,14 +105,18 @@ export async function updateRoomService(
     const { id } = req.params;
 
     try {
-        const updated = await prisma.roomService.update({
-            where: { id },
-            data: {
+        const data = Object.fromEntries(
+            Object.entries({
                 ...req.body,
                 scheduledTime: req.body.scheduledTime
                     ? new Date(req.body.scheduledTime)
                     : undefined,
-            },
+            }).filter(([_, value]) => value !== undefined)
+        );
+
+        const updated = await prisma.roomService.update({
+            where: { id },
+            data,
         });
 
         res.json({ data: updated });
