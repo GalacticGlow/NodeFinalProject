@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Homework1Node.iml" filepath="$PROJECT_DIR$/Homework1Node.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HotelAPINode.iml" filepath="$PROJECT_DIR$/HotelAPINode.iml" />
     </modules>
   </component>
 </project>
