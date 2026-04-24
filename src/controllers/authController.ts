@@ -14,31 +14,32 @@ export async function registerController(
     req: Request<{}, {}, RegisterDTO>,
     res: Response,
 ) {
-    const { name, email, password } = req.body;
+    const { name, email, password, role: requestedRole } = req.body;
+
+    const userReq = req as RequestWithUser;
+
+    const isAdmin = userReq.user?.role === "ADMIN";
+
+    const role = isAdmin && requestedRole
+        ? requestedRole
+        : "GUEST";
 
     const existingUser = await prisma.user.findUnique({
         where: { email },
     });
 
-    if (existingUser !== null) {
+    if (existingUser) {
         return res.status(409).json({ message: "Email is already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-
-    const userReq = req as RequestWithUser;
-
-    const role =
-        userReq.user?.role === "ADMIN" && req.body.role
-            ? req.body.role
-            : "GUEST";
 
     await prisma.user.create({
         data: {
             name,
             email,
             passwordHash: hashedPassword,
-            role
+            role,
         },
     });
 
